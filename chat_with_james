@@ -1,0 +1,278 @@
+jamesladd
+let me check if the primitive is there.
+jamesladd
+Need to quickly reference blue book - give me 2 minutes
+jamesladd
+Ok, primitives 83 and 84 are not exposed.
+jamesladd
+That means you can not currently call perform from Smalltalk.
+jamesladd
+Incidentally that would have been <primitive: 83>
+itspat
+can we expose them?
+jamesladd
+Yep - not hard at all.
+itspat
+(I do not know anything about smalltalk / java primitives)
+jamesladd
+Do you want to try?
+jamesladd
+It isn't all that hard.
+itspat
+yes
+itspat
+I only need 83 for my purposes
+jamesladd
+Brilliant, coz that will be easy.
+jamesladd
+So lets put in the Smalltalk side first, since that is a no brainer.
+jamesladd
+Goto Object.st and add the perform: selector method.
+itspat
+k
+itspat
+and just <primitive: 83> for implementation?
+jamesladd
+Essentially this:
+jamesladd
+perform: aSymbol
+jamesladd
+"Send the unary selector, aSymbol, to the receiver.
+jamesladd
+Fail if the number of arguments expected by the selector is not zero.
+jamesladd
+Primitive. Optional. See Object documentation whatIsAPrimitive."
+jamesladd
+<primitive: 83>
+jamesladd
+^ self perform: aSymbol withArguments: (Array new: 0)
+jamesladd
+Except drop the last line.
+jamesladd
+Your about to add functionality a pile of stuff will rely on - cool :)
+jamesladd
+Let me know when that is added.
+itspat
+okay when I ran my code that uses perform: it gave me a java.lang.reflect.InvocationTargetException
+jamesladd
+Great!
+jamesladd
+That is expected because the corresponding primitive is not exposed in the Java.
+jamesladd
+small steps.
+jamesladd
+Now, open PrimObject.java
+jamesladd
+...yes we have to add some Java but that wont be hard.
+itspat
+k...
+jamesladd
+Search for p81( .... since we will be adding primitive 83.
+itspat
+found it
+jamesladd
+Great, now copy and paste it and cal the method p83
+jamesladd
+we are almost there.
+jamesladd
+Done?
+itspat
+yes :)
+itspat
+you can just type the steps
+itspat
+I follow quickly
+itspat
+and if I run into trouble, I'll tell you
+jamesladd
+Right.
+jamesladd
+Lets just say Im writing for posterity too ;)
+jamesladd
+The body of the method should be
+jamesladd
+return receiver.perform(context.argumentAt(0).javaValue());
+jamesladd
+Compile and run.
+itspat
+PrimObject.java:[360,23] cannot find symbol
+itspat
+symbol  : method perform(java.lang.Object)
+itspat
+location: class st.redline.core.PrimObject
+jamesladd
+oops,
+jamesladd
+return receiver.perform((String) context.argumentAt(0).javaValue());
+lamneth has joined (~lamneth2@modemcable025.103-57-74.mc.videotron.ca)
+jamesladd
+javaValue will return an object which we know in this case to be the selector which is a Java String.
+jamesladd
+So it needs to be cast to correct type.
+itspat
+sweet!!!!
+itspat
+we have perform:
+jamesladd
+:)
+itspat
+and from that I think I can knock out the rest of SUnit :)
+jamesladd
+BRILLIANT
+jamesladd
+Please tweet you added a primitive and it was easy. :)
+jamesladd
+Encourages others :)
+itspat
+k I will
+itspat
+can you please explain the primitive system in general to me?
+itspat
+although first let me try to explain in my own words
+jamesladd
+OH - and the pull request - so we don't loose your work.
+itspat
+based on what I think understands
+itspat
+so
+itspat
+<primitive: 83> will call the prim83 method in PrimObject
+itspat
+and from there we write a Java implementation to do what we want
+itspat
+essentially
+itspat
+?
+jamesladd
+correct.
+itspat
+is perform() a Java method?
+jamesladd
+Yes.
+itspat
+k
+jamesladd
+Each of the perform() methods are at the bottom of PrimObject.
+jamesladd
+NOTE
+jamesladd
+A key difference between Redline and other Smalltalks is that we don't pack up arguments into an array. So there needs to be a primitive for
+jamesladd
+each of the permutations of perform.
+jamesladd
+See the perform methods at the bottom of PrimObject to see what I mean.
+jamesladd
+From the smalltalk side it means we have:  perform:,  perform:with:, perform:with:and: etc
+jamesladd
+Then you marshal the arguments out of context accordingly and call perform.
+jamesladd
+BEFORE you add the rest of SUnit or primitives, lets get the first commit and pull done :)
+itspat
+I'm going to commit separately
+itspat
+but send the pull a bit later...
+itspat
+I'll be working on this today
+itspat
+so you'll get everything later today
+jamesladd
+OH - and when you pass an argument to perform that isnt the selector, dont CAST it.
+jamesladd
+Np - Ill be here so ask stuff whenever.
+jamesladd
+Really cool Pat!
+jamesladd
+Note, if you add the other perform methods, you can use P84 then you need to jump to P231 or you will clash with existing blue book primitive id's.
+jamesladd
+We can fix during pull request if needed.
+jamesladd
+Good luck
+itspat
+jamesladd: do you use windows?
+jamesladd
+nope
+itspat
+hrm
+jamesladd
+Linux
+itspat
+must be my editor being funky
+jamesladd
+?
+itspat
+because when I add lines of code to .st files it adds ^M line separators
+itspat
+and I just changed it to use linux instead
+itspat
+and now it's edited every single line
+itspat
+so the git diff is huge
+jamesladd
+UTF8?
+itspat
+erm, I dunno
+jamesladd
+Mac?
+itspat
+yah
+itspat
+sublime text 2
+jamesladd
+hmmn
+jamesladd
+not sure about how to fix.
+jamesladd
+Sean would know.
+itspat
+weird
+itspat
+if I make it windows line endings
+itspat
+then everything looks fine, and it's just my new lines taht are jacked
+jamesladd
+http://linuxdemon.blogspot.com.au/2011/04/how-to-remove-control-m-characters-in.html
+itspat
+fuckin weird
+itspat
+pattern not found
+itspat
+I'm thinking sublime text 2 is just stupid
+jamesladd
+Maybe, maybe 'cat' the files to a tmp and edit that to see?
+jamesladd
+Again - we can sort that out later. Your changes are important.
+itspat
+it only shows up in the git diff output
+SeanTAllen has left IRC (Quit: Connection closed for inactivity)
+itspat
+not cat or anything
+itspat
+I'm going to try again, but this time using vi
+jamesladd
+ok.
+jamesladd
+it will all be one line or ok, fingers crossed :)
+jamesladd
+Link above tells you how to use Vi to remove ^M so that will help
+itspat
+I saw
+itspat
+but vi didn't see the ^M anywhere
+itspat
+so I don't know what's up
+jamesladd
+at least you can continue.
+itspat
+nope
+itspat
+I wonder if it's just git being strange
+itspat
+I edited with vi
+itspat
+and it has the same ^M stuff
+itspat
+k I'm gonna head home. My client didn't show up today
+itspat
+so I'm going to push my temp changes to my github repo
+itspat
+and sort this shit out later
