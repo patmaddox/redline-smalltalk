@@ -41,6 +41,11 @@ ProtoObject < #Object.
     "Answer an Integer computed with respect to the representation of the receiver."
     <primitive: 75>
 
+"message handling"
+
+- perform: aSelector
+    <primitive: 83>
+
 "testing"
 
 - ifNil: nilBlock
