@@ -4,18 +4,13 @@ TestCase < #SUnitTest.
 
 - test
     self testRun.
-    self testSetUp.
 
 - testRun
     | test |
     test := WasRun newWithName: 'testMethod'.
-    self assertFalse: test wasRun withMessage: 'test wasRun should be false'.
+    self assert: test log size equals: 0 withMessage: 'test log should be empty'.
     test run.
-    self assertTrue: test wasRun withMessage: 'test wasRun should be true'.
-
-- testSetUp
-    | test |
-    test := WasRun newWithName: 'testMethod'.
-    self assertFalse: test wasSetUp withMessage: 'test wasSetUp should be false'.
-    test run.
-    self assertTrue: test wasSetUp withMessage: 'test wasSetUp should be true'.
+    self assert: test log size equals: 3 withMessage: 'test log should have 3 elements'.
+    self assert: (test log at: 1) equals: #setUp withMessage: 'test log at: 1 should equal #setUp'.
+    self assert: (test log at: 2) equals: #testMethod withMessage: 'test log at: 2 should equal #testMethod'.
+    self assert: (test log at: 3) equals: #tearDown withMessage: 'test log at: 3 should equal #tearDown'.

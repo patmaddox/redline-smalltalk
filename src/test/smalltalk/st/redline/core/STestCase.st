@@ -10,7 +10,10 @@ Object < #STestCase.
 
 - setUp
 
+- tearDown
+
 - run
     self setUp.
     self perform: name.
+    self tearDown.
 

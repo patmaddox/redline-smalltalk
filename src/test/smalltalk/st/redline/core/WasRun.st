@@ -1,22 +1,21 @@
 " Redline Smalltalk, Copyright (c) James C. Ladd. All rights reserved. See LICENSE in the root of this distribution "
 
 STestCase < #WasRun
-    instanceVariableNames: 'name wasRun wasSetUp'.
+    instanceVariableNames: 'name log'.
 
 - initialize
     super initialize.
-    wasRun := false.
-    wasSetUp := false.
+    log := OrderedCollection new.
 
 - setUp
-    wasSetUp := true.
+    log add: #setUp.
+
+- tearDown
+    log add: #tearDown.
 
 - testMethod
-    wasRun := true.
+    log add: #testMethod.
 
-- wasRun
-    ^ wasRun.
-
-- wasSetUp
-    ^ wasSetUp.
+- log
+    ^ log.
 
