@@ -5,6 +5,8 @@ Object < #TestSuite.
 - run
     Transcript show: 'Running ArrayTest Suite'; cr.
     ArrayTest new test.
+    Transcript show: 'Running OrderedCollectionTest Suite'; cr.
+    OrderedCollectionTest new test.
     Transcript show: 'Running BooleanTest Suite'; cr.
     BooleanTest new test.
     Transcript show: 'Running UndefinedObjectTest Suite'; cr.
