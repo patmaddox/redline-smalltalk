@@ -19,3 +19,5 @@ Object < #TestSuite.
     CompilerTest new test.
     Transcript show: 'Running JavaAdaptingTest Suite'; cr.
     JavaAdaptingTest new test.
+    Transcript show: 'Running SUnitTest Suite'; cr.
+    SUnitTest new test.

@@ -1,0 +1,13 @@
+" Redline Smalltalk, Copyright (c) James C. Ladd. All rights reserved. See LICENSE in the root of this distribution "
+
+Object < #STestCase.
+
++ newWithName: aString
+    ^ self new name: aString; yourself.
+
+- name: aString
+    name := aString.
+
+- run
+    self perform: name.
+
