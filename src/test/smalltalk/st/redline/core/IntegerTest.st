@@ -19,6 +19,7 @@ TestCase < #IntegerTest.
     self testFloor.
     self testTruncated.
     self testIsInteger.
+    "self testAsString."
 
 - testSimpleEquality
     self assert: 1 equals: 1 withMessage: '1 is not 1.'
@@ -38,7 +39,7 @@ TestCase < #IntegerTest.
 - testSimpleSubtraction
     self assert: 1 - 1 equals: 0 withMessage: '1 - 1 is not 0.'
 
-- testComplexSubtraction  
+- testComplexSubtraction
     self assert: 10 - 1 - 2 - 3 - 4 equals: 0 withMessage: '10 - 1 - 2 - 3 - 4 is not as it should be'
 
 - testLessThanOrEqualTo
@@ -69,3 +70,6 @@ TestCase < #IntegerTest.
 
 - testIsInteger
     self assertTrue: 1 isInteger withMessage: '1 is not an Integer'.
+
+- testAsString
+    self assert: 1 asString equals: '1' withMessage: '1 asString should be ''1'''.
