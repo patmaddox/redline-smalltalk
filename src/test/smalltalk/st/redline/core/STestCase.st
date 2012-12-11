@@ -8,6 +8,9 @@ Object < #STestCase.
 - name: aString
     name := aString.
 
+- setUp
+
 - run
+    self setUp.
     self perform: name.
 
